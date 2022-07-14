@@ -7,6 +7,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
   background: rgb(181,77,122);
   background: linear-gradient(90deg, rgba(181,77,122,1) 0%, rgba(191,197,205,1) 100%);
+  font-family: 'Courier New', Courier, monospace;
 }
 
 button {
