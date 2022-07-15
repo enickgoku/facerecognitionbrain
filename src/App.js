@@ -4,6 +4,7 @@ import Logo from './components/Logo'
 import ImageLinkForm from './components/ImageLinkForm'
 import Rank from './components/Rank'
 import './App.css'
+import React, { useState } from 'react'
 
 
 const settings4 = {
@@ -27,14 +28,42 @@ const settings4 = {
 }
 
 function App() {
-  
+  // constructor(); {
+  //   super()
+  //   this.state = {
+  //     input: '',
+  //   }
+  // }
+  const initialState = {
+    input: '',
+  }
+  const [input, setInput] = useState({ ...initialState })
+
+  const onInputChange = ({ target }) => {
+    setInput({
+      ...input,
+      [target.name]: target.value
+    })
+    console.log(target.value)
+  }
+
+  const onButtonSubmit = (event) => {
+    event.preventDefault()
+    console.log('click')
+    setInput({ ...initialState })
+  }
+
   return (
     <div className="App">
-      <ParticleBackground className="particles" settings={settings4} />
+      <ParticleBackground className="particles"
+        settings={settings4} 
+      />
       <Navigation />
       <Logo />
       <Rank />
-      <ImageLinkForm />
+      <ImageLinkForm onInputChange={onInputChange}
+        onButtonSubmit={onButtonSubmit} 
+      />
       {/* <FaceRecognition /> */}
     </div>
   );
