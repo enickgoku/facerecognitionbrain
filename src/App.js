@@ -4,17 +4,58 @@ import Logo from './components/Logo'
 import ImageLinkForm from './components/ImageLinkForm'
 import Rank from './components/Rank'
 import './App.css'
-import Clarifai from 'clarifai'
+// import Clarifai from 'clarifai'
+import FaceRecognition from './components/FaceRecognition'
 import React, { useState } from 'react'
 
-const USER_ID = '6j8sv24mqvmh'
+const settings4 = {
+  particle: {
+    particleCount: 100,
+    color: "red",
+    minSize: 2,
+    maxSize: 4
+  },
+  velocity: {
+    directionAngle: 0,
+    directionAngleVariance: 30,
+    minSpeed: 0.2,
+    maxSpeed: 4
+  },
+  opacity: {
+    minOpacity: 0,
+    maxOpacity: 0.5,
+    opacityTransitionTime: 5000
+  }
+}
+
+function App() {
+  
+  const initialState = {
+    input: '',
+  }
+  const [input, setInput] = useState({ ...initialState })
+
+  const onInputChange = ({ target }) => {
+    setInput({
+      ...input,
+      [target.name]: target.value
+    })
+    console.log(target.value)
+  }
+
+  const onButtonSubmit = (event) => {
+    event.preventDefault()
+    setInput({ ...initialState })
+  }
+
+  const USER_ID = '6j8sv24mqvmh'
 // Your PAT (Personal Access Token) can be found in the portal under Authentification
 const PAT = '470c7d7864d3431c9cf00e90e9cfdacd'
 const APP_ID = 'c698d62d107a4030beaefd7e8dc8dfc2'
 const MODEL_ID = 'face-detection'
 const MODEL_VERSION_ID = '45fb9a671625463fa646c3523a3087d5'
 // Change this to whatever image URL you want to process
-const IMAGE_URL = 'https://bsmedia.business-standard.com/_media/bs/img/article/2021-08/24/full/1629789571-1327.jpg?im=Resize,width=640'
+const IMAGE_URL = { input }
 
 
 ///////////////////////////////////////////////////////////////////////////////////
@@ -59,47 +100,6 @@ fetch("https://api.clarifai.com/v2/models/" + MODEL_ID + "/versions/" + MODEL_VE
 //   apiKey: '22fa31bf4c4448b2bdb9b3592d4af025'
 // })
 
-const settings4 = {
-  particle: {
-    particleCount: 100,
-    color: "red",
-    minSize: 2,
-    maxSize: 4
-  },
-  velocity: {
-    directionAngle: 0,
-    directionAngleVariance: 30,
-    minSpeed: 0.2,
-    maxSpeed: 4
-  },
-  opacity: {
-    minOpacity: 0,
-    maxOpacity: 0.5,
-    opacityTransitionTime: 5000
-  }
-}
-
-function App() {
-  
-  const initialState = {
-    input: '',
-  }
-  const [input, setInput] = useState({ ...initialState })
-
-  const onInputChange = ({ target }) => {
-    setInput({
-      ...input,
-      [target.name]: target.value
-    })
-    console.log(target.value)
-  }
-
-  const onButtonSubmit = (event) => {
-    event.preventDefault()
-    console.log('click')
-    setInput({ ...initialState })
-  }
-
   return (
     <div className="App">
       <ParticleBackground className="particles"
@@ -109,9 +109,9 @@ function App() {
       <Logo />
       <Rank />
       <ImageLinkForm onInputChange={onInputChange}
-        onButtonSubmit={onButtonSubmit} 
+        onButtonSubmit={onButtonSubmit} input={input}
       />
-      {/* <FaceRecognition /> */}
+      <FaceRecognition input={input} />
     </div>
   );
 }
