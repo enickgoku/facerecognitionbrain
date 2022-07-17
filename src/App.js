@@ -4,17 +4,17 @@ import Logo from './components/Logo'
 import ImageLinkForm from './components/ImageLinkForm'
 import Rank from './components/Rank'
 import './App.css'
-import Clarifai from '../node_modules/clarifai'
+import Clarifai from 'clarifai'
 import React, { useState } from 'react'
 
-const USER_ID = 'YOUR_USER_ID_HERE';
+const USER_ID = '6j8sv24mqvmh'
 // Your PAT (Personal Access Token) can be found in the portal under Authentification
-const PAT = 'YOUR_PAT_HERE';
-const APP_ID = 'YOUR_APP_ID_HERE';
-const MODEL_ID = 'YOUR_MODEL_ID_HERE';
-const MODEL_VERSION_ID = 'YOUR_MODEL_VERSION_ID';
+const PAT = '470c7d7864d3431c9cf00e90e9cfdacd'
+const APP_ID = 'c698d62d107a4030beaefd7e8dc8dfc2'
+const MODEL_ID = 'face-detection'
+const MODEL_VERSION_ID = '45fb9a671625463fa646c3523a3087d5'
 // Change this to whatever image URL you want to process
-const IMAGE_URL = 'https://samples.clarifai.com/metro-north.jpg';
+const IMAGE_URL = 'https://bsmedia.business-standard.com/_media/bs/img/article/2021-08/24/full/1629789571-1327.jpg?im=Resize,width=640'
 
 
 ///////////////////////////////////////////////////////////////////////////////////
@@ -55,9 +55,9 @@ fetch("https://api.clarifai.com/v2/models/" + MODEL_ID + "/versions/" + MODEL_VE
     .then(result => console.log(result))
     .catch(error => console.log('error', error));
 
-const app = new Clarifai.App({
-  apiKey: '22fa31bf4c4448b2bdb9b3592d4af025'
-})
+// const app = new Clarifai.App({
+//   apiKey: '22fa31bf4c4448b2bdb9b3592d4af025'
+// })
 
 const settings4 = {
   particle: {
