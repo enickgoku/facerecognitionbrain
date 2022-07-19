@@ -1,11 +1,11 @@
 import React, { useState, useCallback, useMemo } from 'react'
 import ParticleBackground from 'react-particle-backgrounds'
+import axios from 'axios'
 import Navigation from './components/Navigation'
 import Logo from './components/Logo'
 import ImageLinkForm from './components/ImageLinkForm'
 import Rank from './components/Rank'
 import './App.css'
-// import Clarifai from 'clarifai'
 import FaceRecognition from './components/FaceRecognition'
 
 const settings4 = {
@@ -54,35 +54,33 @@ function App() {
     async event => {
       event.preventDefault()
 
-      const requestOptions = {
-        method: 'POST',
-        headers: {
-          Accept: 'application/json',
-          Authorization: `Key ${REACT_APP_PAT}`,
-        },
-        body: JSON.stringify({
-          user_app_id: {
-            user_id: REACT_APP_USER_ID,
-            app_id: REACT_APP_APP_ID,
-          },
-          inputs: [
-            {
-              data: {
-                image: {
-                  url: formData.input,
-                },
-              },
-            },
-          ],
-        }),
+      const headers = {
+        Accept: 'application/json',
+        Authorization: `Key ${REACT_APP_PAT}`,
       }
 
-      await fetch(
-        `https://api.clarifai.com/v2/models/${REACT_APP_MODEL_ID}/versions/${REACT_APP_MODEL_VERSION_ID}/outputs`,
-        requestOptions
-      )
-        .then(response => response.text())
-        .then(response => {
+      const url = `https://api.clarifai.com/v2/models/${REACT_APP_MODEL_ID}/versions/${REACT_APP_MODEL_VERSION_ID}/outputs`
+
+      const data = JSON.stringify({
+        user_app_id: {
+          user_id: REACT_APP_USER_ID,
+          app_id: REACT_APP_APP_ID,
+        },
+        inputs: [
+          {
+            data: {
+              image: {
+                url: formData.input,
+              },
+            },
+          },
+        ],
+      })
+
+      await axios({ method: 'post', headers, url, data })
+        .then(({ data }) => {
+          console.info(data)
+
           setFormData(initialState)
         })
         .catch(error => console.log('error', error))
