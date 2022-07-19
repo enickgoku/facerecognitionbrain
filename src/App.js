@@ -6,7 +6,7 @@ import Rank from './components/Rank'
 import './App.css'
 // import Clarifai from 'clarifai'
 import FaceRecognition from './components/FaceRecognition'
-import React, { useState } from 'react'
+import React, { useState, useCallback, useMemo } from 'react'
 
 const settings4 = {
   particle: {
@@ -29,72 +29,57 @@ const settings4 = {
 }
 
 function App() {
-  
-  const initialState = {
-    input: '',
-  }
-  const [input, setInput] = useState({ ...initialState })
+  const {
+    REACT_APP_MODEL_ID,
+    REACT_APP_MODEL_VERSION_ID,
+    REACT_APP_PAT,
+    REACT_APP_USER_ID,
+    REACT_APP_APP_ID,
+  } = process.env
 
-  const onInputChange = ({ target }) => {
-    setInput({
-      ...input,
+  const initialState = useMemo(() => ({ input: '' }), [])
+  const [formData, setFormData] = useState(initialState)
+
+  const onInputChange = useCallback(({ target }) => {
+    setFormData({
+      ...formData,
       [target.name]: target.value
     })
-    console.log(target.value)
-  }
+  }, [formData])
 
-  const onButtonSubmit = (event) => {
+  const onButtonSubmit = useCallback(async event => {
     event.preventDefault()
-    setInput({ ...initialState })
-  }
 
-  const USER_ID = '6j8sv24mqvmh'
-// Your PAT (Personal Access Token) can be found in the portal under Authentification
-const PAT = '470c7d7864d3431c9cf00e90e9cfdacd'
-const APP_ID = 'c698d62d107a4030beaefd7e8dc8dfc2'
-const MODEL_ID = 'face-detection'
-const MODEL_VERSION_ID = '45fb9a671625463fa646c3523a3087d5'
-// Change this to whatever image URL you want to process
-const IMAGE_URL = { input }
-
-
-///////////////////////////////////////////////////////////////////////////////////
-// YOU DO NOT NEED TO CHANGE ANYTHING BELOW THIS LINE TO RUN THIS EXAMPLE
-///////////////////////////////////////////////////////////////////////////////////
-
-const raw = JSON.stringify({
-    "user_app_id": {
-        "user_id": USER_ID,
-        "app_id": APP_ID
-    },
-    "inputs": [
-        {
+    const requestOptions = {
+      method: 'POST',
+      headers: {
+          'Accept': 'application/json',
+          'Authorization': 'Key ' + REACT_APP_PAT
+      },
+      body: JSON.stringify({
+        "user_app_id": {
+          "user_id": REACT_APP_USER_ID,
+          "app_id": REACT_APP_APP_ID
+        },
+        "inputs": [
+          {
             "data": {
-                "image": {
-                    "url": IMAGE_URL
-                }
+              "image": {
+                "url": formData.input
             }
-        }
-    ]
-});
+            }
+          }
+        ]
+      })
+    }
 
-const requestOptions = {
-    method: 'POST',
-    headers: {
-        'Accept': 'application/json',
-        'Authorization': 'Key ' + PAT
-    },
-    body: raw
-};
-
-// NOTE: MODEL_VERSION_ID is optional, you can also call prediction with the MODEL_ID only
-// https://api.clarifai.com/v2/models/{YOUR_MODEL_ID}/outputs
-// this will default to the latest version_id
-
-fetch("https://api.clarifai.com/v2/models/" + MODEL_ID + "/versions/" + MODEL_VERSION_ID + "/outputs", requestOptions)
-    .then(response => response.text())
-    .then(result => console.log(result))
-    .catch(error => console.log('error', error));
+    await fetch(`https://api.clarifai.com/v2/models/${REACT_APP_MODEL_ID}/versions/${REACT_APP_MODEL_VERSION_ID}/outputs`, requestOptions)
+      .then(response => response.text())
+      .then(response => {
+        setFormData(initialState)
+      })
+      .catch(error => console.log('error', error))
+  }, [REACT_APP_APP_ID, REACT_APP_MODEL_ID, REACT_APP_MODEL_VERSION_ID, REACT_APP_PAT, REACT_APP_USER_ID, formData.input, initialState])
 
 // const app = new Clarifai.App({
 //   apiKey: '22fa31bf4c4448b2bdb9b3592d4af025'
@@ -109,9 +94,9 @@ fetch("https://api.clarifai.com/v2/models/" + MODEL_ID + "/versions/" + MODEL_VE
       <Logo />
       <Rank />
       <ImageLinkForm onInputChange={onInputChange}
-        onButtonSubmit={onButtonSubmit} input={input}
+        onButtonSubmit={onButtonSubmit} formData={formData}
       />
-      <FaceRecognition input={input} />
+      <FaceRecognition input={formData.input} />
     </div>
   );
 }
