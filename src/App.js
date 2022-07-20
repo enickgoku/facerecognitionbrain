@@ -37,7 +37,7 @@ function App() {
     REACT_APP_APP_ID,
   } = process.env
 
-  const initialState = useMemo(() => ({ input: '' }), [])
+  const initialState = useMemo(() => ({ input: '', box: {} }), [])
   const [formData, setFormData] = useState(initialState)
 
   const onInputChange = useCallback(
@@ -49,6 +49,25 @@ function App() {
     },
     [formData]
   )
+
+  const calculateFaceLocaiton = data => {
+    const clarifaiFace =
+      data.outputs[0].data.regions[0].region_info.bounding_box
+
+    const image = document.getElementById('inputimage')
+    const width = Number(image.width)
+    const height = Number(image.height)
+    return {
+      leftCol: clarifaiFace.left_col * width,
+      topRow: clarifaiFace.top_row * height,
+      rightCol: clarifaiFace.right_col * width,
+      bottomRow: clarifaiFace.bottom_row * height,
+    }
+  }
+
+  const displayFaceBox = box => {
+    setFormData({ box })
+  }
 
   const onButtonSubmit = useCallback(
     async event => {
@@ -79,7 +98,8 @@ function App() {
 
       await axios({ method: 'post', headers, url, data })
         .then(({ data }) => {
-          console.info(data)
+          console.log(data.outputs[0].data.regions[0].region_info.bounding_box)
+          displayFaceBox(calculateFaceLocaiton(data))
 
           setFormData(initialState)
         })

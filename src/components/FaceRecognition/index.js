@@ -4,7 +4,13 @@ const FaceRecognition = ({ input }) => {
   return (
     <div className="center ms">
       <div className="absolute ma2">
-        <img alt="box" src={input} width="500px" height="auto" />
+        <img
+          id="inputimage"
+          alt="box"
+          src={input}
+          width="500px"
+          height="auto"
+        />
       </div>
     </div>
   )
