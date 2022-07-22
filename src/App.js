@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useMemo, useRef } from 'react'
+import React, { useState, useCallback, useMemo } from 'react'
 import ParticleBackground from 'react-particle-backgrounds'
 import axios from 'axios'
 import Navigation from './components/Navigation'
