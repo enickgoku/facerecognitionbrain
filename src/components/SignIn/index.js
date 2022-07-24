@@ -6,7 +6,7 @@ const SignIn = () => {
           <fieldset id="sign_up" className="ba b--transparent ph0 mh0">
             <legend className="f1 fw6 ph0 mh0">Sign In</legend>
             <div className="mt3">
-              <label className="db fw6 lh-copy f6" htmlFor="email-address">
+              <label className="db fw6 lh-copy f5" htmlFor="email-address">
                 Email
               </label>
               <input
@@ -17,7 +17,7 @@ const SignIn = () => {
               />
             </div>
             <div className="mv3">
-              <label className="db fw6 lh-copy f6" htmlFor="password">
+              <label className="db fw6 lh-copy f5" htmlFor="password">
                 Password
               </label>
               <input
@@ -30,13 +30,13 @@ const SignIn = () => {
           </fieldset>
           <div className="">
             <input
-              className="b ph3 pv2 input-reset ba b--black bg-transparent grow pointer f6 dib"
+              className="b ph3 pv2 input-reset ba b--black bg-transparent grow pointer f5 dib"
               type="submit"
               value="Sign in"
             />
           </div>
           <div className="lh-copy mt3">
-            {/* <p  onClick={() => onRouteChange('register')} className="f6 link dim black db pointer">Register</p> */}
+            <p className="f4 link dim black db pointer">Register</p>
           </div>
         </div>
       </main>
