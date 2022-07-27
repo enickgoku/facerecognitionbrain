@@ -1,4 +1,5 @@
 import React, { useState, useCallback, useMemo } from 'react'
+import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import ParticleBackground from 'react-particle-backgrounds'
 import axios from 'axios'
 import Navigation from './components/Navigation'
@@ -102,7 +103,7 @@ function App() {
     <div className="App">
       <ParticleBackground className="particles" settings={settings4} />
       <Navigation />
-      <SignIn />
+      <SignIn path="/signin" />
       <Logo />
       <Rank />
       <ImageLinkForm
