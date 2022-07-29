@@ -98,7 +98,7 @@ function App() {
       initialState,
     ]
   )
-
+  // Add react router
   return (
     <div className="App">
       <ParticleBackground className="particles" settings={settings4} />
