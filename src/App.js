@@ -98,6 +98,7 @@ function App() {
       initialState,
     ]
   )
+
   // Add react router
   return (
     <div className="App">
