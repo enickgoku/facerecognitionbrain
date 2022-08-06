@@ -3,6 +3,7 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import ParticleBackground from 'react-particle-backgrounds'
 import axios from 'axios'
 import Navigation from './components/Navigation'
+import Register from './components/Register'
 import SignIn from './components/SignIn'
 import Logo from './components/Logo'
 import ImageLinkForm from './components/ImageLinkForm'
@@ -98,15 +99,19 @@ function App() {
       initialState,
     ]
   )
+
   const [route, setRoute] = useState('signin')
+
+  const onRouteChange = route => {
+    setRoute(route)
+  }
   // Add react router
+
   return (
     <div className="App">
       <ParticleBackground className="particles" settings={settings4} />
-      <Navigation />
-      {route === 'signin' ? (
-        <SignIn path="/signin" />
-      ) : (
+      <Navigation onRouteChange={onRouteChange} />
+      {route === 'home' ? (
         <div>
           <Logo />
           <Rank />
@@ -117,6 +122,10 @@ function App() {
           />
           <FaceRecognition faceData={faceData} />
         </div>
+      ) : route === 'signin' ? (
+        <SignIn onRouteChange={onRouteChange} />
+      ) : (
+        <Register onRouteChange={onRouteChange} />
       )}
     </div>
   )
