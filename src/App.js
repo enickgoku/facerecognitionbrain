@@ -98,21 +98,26 @@ function App() {
       initialState,
     ]
   )
-
+  const [route, setRoute] = useState('signin')
   // Add react router
   return (
     <div className="App">
       <ParticleBackground className="particles" settings={settings4} />
       <Navigation />
-      <SignIn path="/signin" />
-      <Logo />
-      <Rank />
-      <ImageLinkForm
-        onInputChange={onInputChange}
-        onButtonSubmit={onButtonSubmit}
-        formData={formData}
-      />
-      <FaceRecognition faceData={faceData} />
+      {route === 'signin' ? (
+        <SignIn path="/signin" />
+      ) : (
+        <div>
+          <Logo />
+          <Rank />
+          <ImageLinkForm
+            onInputChange={onInputChange}
+            onButtonSubmit={onButtonSubmit}
+            formData={formData}
+          />
+          <FaceRecognition faceData={faceData} />
+        </div>
+      )}
     </div>
   )
 }
