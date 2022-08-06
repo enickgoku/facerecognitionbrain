@@ -2,7 +2,7 @@ import React, { useState, useCallback, useMemo } from 'react'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import ParticleBackground from 'react-particle-backgrounds'
 import axios from 'axios'
-import Navigation from './components/Navigation'
+import Navigation from './components/Navigation/index'
 import Register from './components/Register'
 import SignIn from './components/SignIn'
 import Logo from './components/Logo'
@@ -101,8 +101,15 @@ function App() {
   )
 
   const [route, setRoute] = useState('signin')
+  const [isSignedIn, setIsSignedIn] = useState(false)
 
   const onRouteChange = route => {
+    if (route === 'signout') {
+      setIsSignedIn(false)
+    } else if (route === 'home') {
+      setIsSignedIn(true)
+    }
+
     setRoute(route)
   }
   // Add react router
@@ -110,7 +117,7 @@ function App() {
   return (
     <div className="App">
       <ParticleBackground className="particles" settings={settings4} />
-      <Navigation onRouteChange={onRouteChange} />
+      <Navigation onRouteChange={onRouteChange} isSignedIn={isSignedIn} />
       {route === 'home' ? (
         <div>
           <Logo />
