@@ -114,6 +114,8 @@ function App() {
       setIsSignedIn(false)
     } else if (route === 'home') {
       setIsSignedIn(true)
+    } else if (route === 'register') {
+      setIsSignedIn(false)
     }
 
     setRoute(route)

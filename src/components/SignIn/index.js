@@ -15,7 +15,19 @@ function SignIn({ onRouteChange }) {
     })
   }
 
-  const onSubmit = () => {
+  const onSubmit = event => {
+    event.preventDefault()
+
+    fetch('http://localhost:3001/signin', {
+      method: 'post',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        email: formData.emailAddress,
+        password: formData.password,
+      }),
+    })
+
+    onRouteChange('home')
     console.log(formData)
   }
 
@@ -34,6 +46,7 @@ function SignIn({ onRouteChange }) {
                 type="email"
                 name="emailAddress"
                 id="emailAddress"
+                onChange={onFormChange}
               />
             </div>
             <div className="mv3">
@@ -45,12 +58,13 @@ function SignIn({ onRouteChange }) {
                 type="password"
                 name="password"
                 id="password"
+                onChange={onFormChange}
               />
             </div>
           </fieldset>
           <div className="">
             <input
-              onClick={() => onRouteChange('home')}
+              onClick={onSubmit}
               className="b ph3 pv2 input-reset ba b--black bg-transparent grow pointer f5 dib"
               type="submit"
               value="Sign in"
