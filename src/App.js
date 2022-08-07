@@ -40,11 +40,28 @@ function App() {
     REACT_APP_APP_ID,
   } = process.env
 
-  // useEffect(() => {
-  //   fetch('http://localhost:3001')
-  //     .then(response => response.json())
-  //     .then(console.log)
-  // })
+  const userData = {
+    user: {
+      id: '',
+      name: '',
+      email: '',
+      entries: 0,
+      joined: '',
+    },
+  }
+  const [user, setUser] = useState(userData)
+
+  const loadUser = data => {
+    setUser({
+      user: {
+        id: data.id,
+        name: data.name,
+        email: data.email,
+        entries: data.entries,
+        joined: data.joined,
+      },
+    })
+  }
 
   const initialState = useMemo(() => ({ input: '' }), [])
   const [formData, setFormData] = useState(initialState)
@@ -140,7 +157,7 @@ function App() {
       ) : route === 'signin' ? (
         <SignIn onRouteChange={onRouteChange} />
       ) : (
-        <Register onRouteChange={onRouteChange} />
+        <Register loadUser={loadUser} onRouteChange={onRouteChange} />
       )}
     </div>
   )

@@ -30,11 +30,9 @@ function SignIn({ onRouteChange }) {
       .then(data => {
         if (data === 'success') {
           onRouteChange('home')
+          console.log(formData)
         }
       })
-
-    onRouteChange('home')
-    console.log(formData)
   }
 
   return (
