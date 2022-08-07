@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useMemo } from 'react'
+import React, { useState, useCallback, useMemo, useEffect } from 'react'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import ParticleBackground from 'react-particle-backgrounds'
 import axios from 'axios'
@@ -39,6 +39,12 @@ function App() {
     REACT_APP_USER_ID,
     REACT_APP_APP_ID,
   } = process.env
+
+  // useEffect(() => {
+  //   fetch('http://localhost:3001')
+  //     .then(response => response.json())
+  //     .then(console.log)
+  // })
 
   const initialState = useMemo(() => ({ input: '' }), [])
   const [formData, setFormData] = useState(initialState)
