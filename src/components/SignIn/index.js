@@ -26,6 +26,12 @@ function SignIn({ onRouteChange }) {
         password: formData.password,
       }),
     })
+      .then(response => response.json())
+      .then(data => {
+        if (data === 'success') {
+          onRouteChange('home')
+        }
+      })
 
     onRouteChange('home')
     console.log(formData)
