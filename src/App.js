@@ -49,6 +49,7 @@ function App() {
       joined: '',
     },
   }
+
   const [user, setUser] = useState(userData)
 
   const loadUser = data => {
@@ -146,7 +147,7 @@ function App() {
       {route === 'home' ? (
         <div>
           <Logo />
-          <Rank />
+          <Rank name={user.name} entries={user.entries} />
           <ImageLinkForm
             onInputChange={onInputChange}
             onButtonSubmit={onButtonSubmit}
