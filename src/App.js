@@ -110,11 +110,6 @@ function App() {
           setFaceData({ ...data, imageURL: formData.input })
         })
         .catch(console.log)
-        .then(() => {
-          axios.get(`http://localhost:3001`).then()
-        })
-
-      console.log({ data })
 
       setFormData(initialState)
     },
