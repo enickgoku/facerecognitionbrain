@@ -28,9 +28,8 @@ function SignIn({ onRouteChange }) {
     })
       .then(response => response.json())
       .then(data => {
-        if (data === 'success') {
+        if (data) {
           onRouteChange('home')
-          console.log(formData)
         }
       })
   }
