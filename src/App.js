@@ -157,7 +157,6 @@ function App() {
 
     setRoute(route)
   }
-  // Add react router
 
   return (
     <div className="App">
