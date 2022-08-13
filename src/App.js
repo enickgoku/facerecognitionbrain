@@ -127,9 +127,7 @@ function App() {
               })
           }
         })
-        .catch(console.log)
-
-      console.log(user.id)
+        .catch(console.log())
 
       setFormData(initialState)
     },

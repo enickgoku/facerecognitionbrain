@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-function SignIn({ onRouteChange }) {
+function SignIn({ onRouteChange, loadUser }) {
   const initialState = {
     emailAddress: '',
     password: '',
@@ -27,8 +27,9 @@ function SignIn({ onRouteChange }) {
       }),
     })
       .then(response => response.json())
-      .then(data => {
-        if (data) {
+      .then(user => {
+        if (user.id) {
+          loadUser(user)
           onRouteChange('home')
         }
       })

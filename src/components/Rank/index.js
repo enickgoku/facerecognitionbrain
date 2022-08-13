@@ -5,19 +5,17 @@ const Rank = ({ user, loadUser }) => {
 
   useEffect(() => {
     const importUser = async () => {
-      await loadUser(user)
+      loadUser(user)
       setCurrentUser(user)
     }
 
     importUser()
-  }, [])
+  }, [loadUser, user])
 
   const { name, entries } = currentUser
   return (
     <div>
-      <div className="white f3">
-        `{currentUser.name} your current rank is...`
-      </div>
+      <div className="white f3">`{name} your current rank is...`</div>
       <div className="white f1">{entries}</div>
     </div>
   )
