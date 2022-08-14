@@ -108,25 +108,25 @@ function App() {
         .then(({ data }) => {
           setFaceData({ ...data, imageURL: formData.input })
         })
-        .then(data => {
-          if (data) {
-            fetch('http://localhost:3001/signin', {
-              method: 'put',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({
-                id: user.id,
-              }),
-            })
-              .then(data => data.json())
-              .then(count => {
-                setUser({
-                  user: {
-                    entries: count,
-                  },
-                })
-              })
-          }
-        })
+        // .then(data => {
+        //   if (data) {
+        //     fetch('http://localhost:3001/signin', {
+        //       method: 'put',
+        //       headers: { 'Content-Type': 'application/json' },
+        //       body: JSON.stringify({
+        //         id: user.id,
+        //       }),
+        //     })
+        //       .then(data => data.json())
+        //       .then(count => {
+        //         setUser({
+        //           user: {
+        //             entries: count,
+        //           },
+        //         })
+        //       })
+        //   }
+        // })
         .catch(console.log())
 
       setFormData(initialState)
@@ -139,7 +139,6 @@ function App() {
       REACT_APP_USER_ID,
       formData.input,
       initialState,
-      user.id,
     ]
   )
 
