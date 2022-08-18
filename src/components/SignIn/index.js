@@ -26,7 +26,9 @@ function SignIn({ onRouteChange, loadUser }) {
         email: formData.emailAddress,
         password: formData.password,
       }),
-    }).then(response => response.json())
+    })
+      .then(response => response.json())
+      .then(loadUser)
 
     onRouteChange('home')
   }

@@ -106,27 +106,30 @@ function App() {
 
       await axios({ method: 'post', headers, url, data })
         .then(({ data }) => {
+          console.log(data)
           setFaceData({ ...data, imageURL: formData.input })
+          return data
         })
-        // .then(data => {
-        //   if (data) {
-        //     fetch('http://localhost:3001/signin', {
-        //       method: 'put',
-        //       headers: { 'Content-Type': 'application/json' },
-        //       body: JSON.stringify({
-        //         id: user.id,
-        //       }),
-        //     })
-        //       .then(data => data.json())
-        //       .then(count => {
-        //         setUser({
-        //           user: {
-        //             entries: count,
-        //           },
-        //         })
-        //       })
-        //   }
-        // })
+        .then(data => {
+          if (data) {
+            axios
+              .post('http://localhost:3001/image', {
+                method: 'post',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                  id: user.id,
+                }),
+              })
+              .then(data => data.json())
+              .then(count => {
+                setUser({
+                  user: {
+                    entries: count,
+                  },
+                })
+              })
+          }
+        })
         .catch(console.log())
 
       setFormData(initialState)
@@ -139,6 +142,7 @@ function App() {
       REACT_APP_USER_ID,
       formData.input,
       initialState,
+      user.id,
     ]
   )
 
