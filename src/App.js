@@ -9,6 +9,7 @@ import ImageLinkForm from './components/ImageLinkForm'
 import Rank from './components/Rank'
 import './App.css'
 import FaceRecognition from './components/FaceRecognition'
+import GitHub from './components/GitHub/GitHub'
 
 const settings4 = {
   particle: {
@@ -181,6 +182,7 @@ function App() {
     <div className="App">
       <ParticleBackground className="particles" settings={settings4} />
       <Navigation onRouteChange={onRouteChange} isSignedIn={isSignedIn} />
+      <GitHub />
       {route === 'home' ? (
         <div>
           <Logo />
