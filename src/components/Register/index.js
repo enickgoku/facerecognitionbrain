@@ -31,6 +31,8 @@ function Register({ onRouteChange, loadUser }) {
       .then(response => response.json())
       .then(user => {
         if (user) {
+          localStorage.setItem('userId', user.id)
+          localStorage.setItem('token', user.token)
           loadUser(user)
           onRouteChange('home')
           console.log(formData)

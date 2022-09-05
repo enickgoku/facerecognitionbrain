@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useMemo } from 'react'
+import React, { useState, useCallback, useMemo, useEffect } from 'react'
 import ParticleBackground from 'react-particle-backgrounds'
 import axios from 'axios'
 import Navigation from './components/Navigation/index'
@@ -53,15 +53,35 @@ function App() {
 
   const loadUser = data => {
     setUser({
-      user: {
-        id: data.id,
-        name: data.name,
-        email: data.email,
-        entries: data.entries,
-        joined: data.joined,
-      },
+      id: data.id,
+      name: data.name,
+      email: data.email,
+      entries: data.entries,
+      joined: data.createdAt,
     })
   }
+
+  useEffect(() => {
+    const userId = localStorage.getItem('userId')
+    const token = localStorage.getItem('token')
+
+    if (userId && token) {
+      fetch(`http://localhost:3001/profile/${userId}`, {
+        method: 'get',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+      })
+        .then(response => response.json())
+        .then(user => {
+          if (user) {
+            loadUser(user)
+            onRouteChange('home')
+          }
+        })
+    }
+  }, [])
 
   const initialState = useMemo(() => ({ input: '' }), [])
   const [formData, setFormData] = useState(initialState)
@@ -112,22 +132,19 @@ function App() {
         })
         .then(data => {
           if (data) {
-            axios
-              .post('http://localhost:3001/image', {
-                method: 'post',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                  id: user.id,
-                }),
-              })
-              .then(data => data.json())
-              .then(count => {
-                setUser({
-                  user: {
-                    entries: count,
-                  },
-                })
-              })
+            const userId = localStorage.getItem('userId')
+            const token = localStorage.getItem('token')
+
+            axios({
+              method: 'put',
+              url: `http://localhost:3001/image/${userId}`,
+              headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${token}`,
+              },
+            }).then(user => {
+              loadUser(user.data)
+            })
           }
         })
         .catch(console.log())
@@ -142,7 +159,6 @@ function App() {
       REACT_APP_USER_ID,
       formData.input,
       initialState,
-      user.id,
     ]
   )
 

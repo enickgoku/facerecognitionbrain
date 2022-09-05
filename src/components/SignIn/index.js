@@ -1,4 +1,3 @@
-import userEvent from '@testing-library/user-event'
 import { useState } from 'react'
 
 function SignIn({ onRouteChange, loadUser }) {
@@ -28,7 +27,11 @@ function SignIn({ onRouteChange, loadUser }) {
       }),
     })
       .then(response => response.json())
-      .then(loadUser)
+      .then(user => {
+        localStorage.setItem('userId', user.id)
+        localStorage.setItem('token', user.token)
+        loadUser(user)
+      })
 
     onRouteChange('home')
   }
