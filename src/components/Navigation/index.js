@@ -1,7 +1,7 @@
 import React from 'react'
 
-const Navigation = ({ onRouteChange, isSignedIn }) => {
-  if (isSignedIn) {
+const Navigation = ({ onRouteChange, isSignedIn, user }) => {
+  if (isSignedIn && user.length >= 1) {
     return (
       <nav style={{ display: 'flex', justifyContent: 'flex-end' }}>
         <p

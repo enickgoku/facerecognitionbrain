@@ -181,9 +181,13 @@ function App() {
   return (
     <div className="App">
       <ParticleBackground className="particles" settings={settings4} />
-      <Navigation onRouteChange={onRouteChange} isSignedIn={isSignedIn} />
+      <Navigation
+        onRouteChange={onRouteChange}
+        isSignedIn={isSignedIn}
+        user={user}
+      />
       <GitHub />
-      {route === 'home' ? (
+      {route === 'home' && userData.user.id.length >= 1 ? (
         <div>
           <Logo />
           <Rank user={user} />
