@@ -31,9 +31,12 @@ function SignIn({ onRouteChange, loadUser }) {
         localStorage.setItem('userId', user.id)
         localStorage.setItem('token', user.token)
         loadUser(user)
-      })
 
-    onRouteChange('home')
+        if (user) {
+          onRouteChange('home')
+        }
+      })
+      .catch(console.error())
   }
 
   return (

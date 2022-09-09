@@ -187,7 +187,7 @@ function App() {
         user={user}
       />
       <GitHub />
-      {route === 'home' && userData.user.id.length >= 1 ? (
+      {route === 'home' ? (
         <div>
           <Logo />
           <Rank user={user} />
