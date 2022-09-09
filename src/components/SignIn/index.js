@@ -1,12 +1,16 @@
 import { useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
 
-function SignIn({ onRouteChange, loadUser }) {
+function SignIn() {
+  const navigate = useNavigate()
+
   const initialState = {
     emailAddress: '',
     password: '',
   }
 
   const [formData, setFormData] = useState(initialState)
+  const [error, setError] = useState(false)
 
   const onFormChange = event => {
     setFormData({
@@ -18,6 +22,8 @@ function SignIn({ onRouteChange, loadUser }) {
   const onSubmit = event => {
     event.preventDefault()
 
+    setError(false)
+
     fetch('http://localhost:3001/signin', {
       method: 'post',
       headers: { 'Content-Type': 'application/json' },
@@ -27,16 +33,15 @@ function SignIn({ onRouteChange, loadUser }) {
       }),
     })
       .then(response => response.json())
-      .then(user => {
-        localStorage.setItem('userId', user.id)
-        localStorage.setItem('token', user.token)
-        loadUser(user)
-
-        if (user) {
-          onRouteChange('home')
+      .then(response => {
+        if (response.error) {
+          setError(true)
+        } else {
+          localStorage.setItem('userId', response.id)
+          localStorage.setItem('token', response.token)
+          navigate('/')
         }
       })
-      .catch(console.error())
   }
 
   return (
@@ -79,13 +84,15 @@ function SignIn({ onRouteChange, loadUser }) {
             />
           </div>
           <div className="lh-copy mt3">
-            <p
-              onClick={() => onRouteChange('register')}
-              className="f4 link dim black db pointer"
-            >
+            <Link to="/register" className="f4 link dim black db pointer">
               Register
-            </p>
+            </Link>
           </div>
+          {error ? (
+            <label style={{ color: 'red' }}>
+              Email or password is incorrect
+            </label>
+          ) : null}
         </div>
       </main>
     </article>

@@ -1,14 +1,19 @@
 import React from 'react'
+import { Link, useNavigate } from 'react-router-dom'
 
-const Navigation = ({ onRouteChange, isSignedIn, user }) => {
-  if (isSignedIn) {
+const Navigation = ({ onRouteChange, user }) => {
+  const navigate = useNavigate()
+  const token = localStorage.getItem('token')
+  const userId = localStorage.getItem('userId')
+
+  if (token && userId) {
     return (
       <nav style={{ display: 'flex', justifyContent: 'flex-end' }}>
         <p
           onClick={() => {
             localStorage.removeItem('userId')
             localStorage.removeItem('token')
-            onRouteChange('signout')
+            navigate('../signin')
           }}
           className="f3 link dim black pa3 underline pointer"
         >
@@ -19,18 +24,15 @@ const Navigation = ({ onRouteChange, isSignedIn, user }) => {
   } else {
     return (
       <nav style={{ display: 'flex', justifyContent: 'flex-end' }}>
-        <p
-          onClick={() => onRouteChange('signin')}
-          className="f3 link dim black pa3 underline pointer"
-        >
+        <Link to="/signin" className="f3 link dim black pa3 underline pointer">
           Sign In
-        </p>
-        <p
-          onClick={() => onRouteChange('register')}
+        </Link>
+        <Link
+          to="/register"
           className="f3 link dim black pa3 underline pointer"
         >
           Register
-        </p>
+        </Link>
       </nav>
     )
   }

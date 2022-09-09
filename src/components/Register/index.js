@@ -1,6 +1,9 @@
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 
-function Register({ onRouteChange, loadUser }) {
+function Register() {
+  const navigate = useNavigate()
+
   const initialState = {
     name: '',
     emailAddress: '',
@@ -8,6 +11,7 @@ function Register({ onRouteChange, loadUser }) {
   }
 
   const [formData, setFormData] = useState(initialState)
+  const [error, setError] = useState(false)
 
   const onFormChange = event => {
     setFormData({
@@ -19,6 +23,8 @@ function Register({ onRouteChange, loadUser }) {
   const onSubmit = event => {
     event.preventDefault()
 
+    setError(false)
+
     fetch('http://localhost:3001/register', {
       method: 'post',
       headers: { 'Content-Type': 'application/json' },
@@ -29,13 +35,13 @@ function Register({ onRouteChange, loadUser }) {
       }),
     })
       .then(response => response.json())
-      .then(user => {
-        if (user) {
-          localStorage.setItem('userId', user.id)
-          localStorage.setItem('token', user.token)
-          loadUser(user)
-          onRouteChange('home')
-          console.log(formData)
+      .then(response => {
+        if (response.error) {
+          setError(true)
+        } else {
+          localStorage.setItem('userId', response.id)
+          localStorage.setItem('token', response.token)
+          navigate('/')
         }
       })
   }
@@ -91,6 +97,9 @@ function Register({ onRouteChange, loadUser }) {
               value="Register"
             />
           </div>
+          {error ? (
+            <label style={{ color: 'red' }}>An error occurred</label>
+          ) : null}
         </div>
       </main>
     </article>

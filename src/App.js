@@ -1,6 +1,7 @@
-import React, { useState, useCallback, useMemo, useEffect } from 'react'
+import React, { useState, useCallback, useEffect } from 'react'
 import ParticleBackground from 'react-particle-backgrounds'
 import axios from 'axios'
+import { Outlet, Route, Routes, useNavigate } from 'react-router-dom'
 import Navigation from './components/Navigation/index'
 import Register from './components/Register'
 import SignIn from './components/SignIn'
@@ -10,6 +11,15 @@ import Rank from './components/Rank'
 import './App.css'
 import FaceRecognition from './components/FaceRecognition'
 import GitHub from './components/GitHub/GitHub'
+import { handleLogout } from './utils/session'
+
+const {
+  REACT_APP_MODEL_ID,
+  REACT_APP_MODEL_VERSION_ID,
+  REACT_APP_PAT,
+  REACT_APP_USER_ID,
+  REACT_APP_APP_ID,
+} = process.env
 
 const settings4 = {
   particle: {
@@ -32,13 +42,7 @@ const settings4 = {
 }
 
 function App() {
-  const {
-    REACT_APP_MODEL_ID,
-    REACT_APP_MODEL_VERSION_ID,
-    REACT_APP_PAT,
-    REACT_APP_USER_ID,
-    REACT_APP_APP_ID,
-  } = process.env
+  const navigate = useNavigate()
 
   const userData = {
     user: {
@@ -48,18 +52,6 @@ function App() {
       entries: 0,
       joined: '',
     },
-  }
-
-  const [user, setUser] = useState(userData)
-
-  const loadUser = data => {
-    setUser({
-      id: data.id,
-      name: data.name,
-      email: data.email,
-      entries: data.entries,
-      joined: data.createdAt,
-    })
   }
 
   const userId = localStorage.getItem('userId')
@@ -75,17 +67,25 @@ function App() {
         },
       })
         .then(response => response.json())
-        .then(user => {
-          if (user) {
-            loadUser(user)
-            onRouteChange('home')
+        .then(response => {
+          if (response.error) {
+            handleLogout()
+            navigate('../signin')
+          } else {
+            setUser({
+              id: response.id,
+              name: response.name,
+              email: response.email,
+              entries: response.entries,
+              joined: response.createdAt,
+            })
           }
         })
     }
-  }, [token, userId])
+  }, [navigate, token, userId])
 
-  const initialState = useMemo(() => ({ input: '' }), [])
-  const [formData, setFormData] = useState(initialState)
+  const [user, setUser] = useState(userData)
+  const [formData, setFormData] = useState({ input: '' })
   const [faceData, setFaceData] = useState({})
 
   const onInputChange = useCallback(
@@ -125,85 +125,64 @@ function App() {
         ],
       })
 
-      await axios({ method: 'post', headers, url, data })
-        .then(({ data }) => {
-          console.log(data)
-          setFaceData({ ...data, imageURL: formData.input })
-          return data
-        })
-        .then(data => {
-          if (data) {
-            const userId = localStorage.getItem('userId')
-            const token = localStorage.getItem('token')
-
-            axios({
-              method: 'put',
-              url: `http://localhost:3001/image/${userId}`,
-              headers: {
-                'Content-Type': 'application/json',
-                Authorization: `Bearer ${token}`,
-              },
-            }).then(user => {
-              loadUser(user.data)
-            })
+      if (userId && token) {
+        axios({
+          method: 'put',
+          url: `http://localhost:3001/image/${userId}`,
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+        }).then(async response => {
+          if (response.status === 401) {
+            localStorage.removeItem('token')
+            localStorage.removeItem('userId')
+            navigate('../signin')
+          } else {
+            await axios({ method: 'post', headers, url, data }).then(
+              ({ data }) => {
+                setFaceData({ ...data, imageURL: formData.input })
+              }
+            )
           }
         })
-        .catch(console.error())
+      }
 
-      setFormData(initialState)
+      setFormData({ input: '' })
     },
-    [
-      REACT_APP_APP_ID,
-      REACT_APP_MODEL_ID,
-      REACT_APP_MODEL_VERSION_ID,
-      REACT_APP_PAT,
-      REACT_APP_USER_ID,
-      formData.input,
-      initialState,
-    ]
+    [formData.input, navigate, token, userId]
   )
 
-  const [route, setRoute] = useState('signin')
-  const [isSignedIn, setIsSignedIn] = useState(false)
-
-  const onRouteChange = route => {
-    if (route === 'signout') {
-      setIsSignedIn(false)
-    } else if (route === 'home') {
-      setIsSignedIn(true)
-    } else if (route === 'register') {
-      setIsSignedIn(false)
-    }
-
-    setRoute(route)
-  }
-
   return (
-    <div className="App">
-      <ParticleBackground className="particles" settings={settings4} />
-      <Navigation
-        onRouteChange={onRouteChange}
-        isSignedIn={isSignedIn}
-        user={user}
-      />
-      <GitHub />
-      {route === 'home' && token ? (
-        <div>
-          <Logo />
-          <Rank user={user} />
-          <ImageLinkForm
-            onInputChange={onInputChange}
-            onButtonSubmit={onButtonSubmit}
-            formData={formData}
-          />
-          <FaceRecognition faceData={faceData} />
-        </div>
-      ) : route === 'signin' ? (
-        <SignIn onRouteChange={onRouteChange} loadUser={loadUser} />
-      ) : (
-        <Register loadUser={loadUser} onRouteChange={onRouteChange} />
-      )}
-    </div>
+    <Routes>
+      <Route
+        path="/"
+        element={
+          <div className="App">
+            <ParticleBackground className="particles" settings={settings4} />
+            <Navigation user={user} />
+            <GitHub />
+            {!token ? (
+              <Outlet />
+            ) : (
+              <div>
+                <Logo />
+                <Rank user={user} />
+                <ImageLinkForm
+                  onInputChange={onInputChange}
+                  onButtonSubmit={onButtonSubmit}
+                  formData={formData}
+                />
+                <FaceRecognition faceData={faceData} />
+              </div>
+            )}
+          </div>
+        }
+      >
+        <Route path="/signin" element={<SignIn />} />
+        <Route path="/register" element={<Register />} />
+      </Route>
+    </Routes>
   )
 }
 
