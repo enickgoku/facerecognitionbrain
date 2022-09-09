@@ -25,7 +25,7 @@ function Register() {
 
     setError(false)
 
-    fetch('http://localhost:3001/register', {
+    fetch('https://infinite-waters-08259.herokuapp.com/register', {
       method: 'post',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({

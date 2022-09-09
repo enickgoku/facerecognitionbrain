@@ -59,7 +59,7 @@ function App() {
 
   useEffect(() => {
     if (userId && token) {
-      fetch(`http://localhost:3001/profile/${userId}`, {
+      fetch(`https://infinite-waters-08259.herokuapp.com/profile/${userId}`, {
         method: 'get',
         headers: {
           'Content-Type': 'application/json',
@@ -128,7 +128,7 @@ function App() {
       if (userId && token) {
         axios({
           method: 'put',
-          url: `http://localhost:3001/image/${userId}`,
+          url: `https://infinite-waters-08259.herokuapp.com/image/${userId}`,
           headers: {
             'Content-Type': 'application/json',
             Authorization: `Bearer ${token}`,
