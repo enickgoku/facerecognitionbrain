@@ -2,7 +2,7 @@ const GitHub = () => {
   return (
     <div>
       <a
-        href="https://github.com/enickgoku/flashcard-app"
+        href="https://github.com/enickgoku/face-recognition-directory"
         target="_blank"
         rel="noreferrer"
       >
