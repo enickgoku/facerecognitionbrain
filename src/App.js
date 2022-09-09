@@ -62,10 +62,10 @@ function App() {
     })
   }
 
-  useEffect(() => {
-    const userId = localStorage.getItem('userId')
-    const token = localStorage.getItem('token')
+  const userId = localStorage.getItem('userId')
+  const token = localStorage.getItem('token')
 
+  useEffect(() => {
     if (userId && token) {
       fetch(`http://localhost:3001/profile/${userId}`, {
         method: 'get',
@@ -82,7 +82,7 @@ function App() {
           }
         })
     }
-  }, [])
+  }, [token, userId])
 
   const initialState = useMemo(() => ({ input: '' }), [])
   const [formData, setFormData] = useState(initialState)
@@ -148,7 +148,7 @@ function App() {
             })
           }
         })
-        .catch(console.log())
+        .catch(console.error())
 
       setFormData(initialState)
     },
@@ -187,7 +187,7 @@ function App() {
         user={user}
       />
       <GitHub />
-      {route === 'home' ? (
+      {route === 'home' && token ? (
         <div>
           <Logo />
           <Rank user={user} />
