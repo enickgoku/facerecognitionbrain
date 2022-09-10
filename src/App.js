@@ -148,13 +148,9 @@ function App() {
         })
       }
 
-      // update the user's entries count
-      // setEntries(entries + 1)
-      setUser({ ...user, entries: user.entries + 1 })
-
       setFormData({ input: '' })
     },
-    [formData.input, navigate, token, user, userId]
+    [formData.input, navigate, token, userId]
   )
 
   return (
