@@ -142,13 +142,15 @@ function App() {
             await axios({ method: 'post', headers, url, data }).then(
               ({ data }) => {
                 setFaceData({ ...data, imageURL: formData.input })
-                // update user entries
-                setUser({ ...user, entries: response.data })
               }
             )
           }
         })
       }
+
+      // update the user's entries count
+      // setEntries(entries + 1)
+      setUser({ ...user, entries: user.entries + 1 })
 
       setFormData({ input: '' })
     },
