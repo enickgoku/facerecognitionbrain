@@ -142,7 +142,7 @@ function App() {
             await axios({ method: 'post', headers, url, data }).then(
               ({ data }) => {
                 setFaceData({ ...data, imageURL: formData.input })
-                setUser({ ...user, entries: response.data })
+                setUser({ ...user, entries: user.entries + 1 })
               }
             )
           }
