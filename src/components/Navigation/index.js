@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 
-const Navigation = ({ onRouteChange, user }) => {
+const Navigation = () => {
   const navigate = useNavigate()
   const token = localStorage.getItem('token')
   const userId = localStorage.getItem('userId')
