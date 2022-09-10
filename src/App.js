@@ -152,7 +152,7 @@ function App() {
 
       setFormData({ input: '' })
     },
-    [formData.input, navigate, token, userId]
+    [formData.input, navigate, token, user, userId]
   )
 
   return (
