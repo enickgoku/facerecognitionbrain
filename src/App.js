@@ -2,6 +2,7 @@ import React, { useState, useCallback, useEffect } from 'react'
 import ParticleBackground from 'react-particle-backgrounds'
 import axios from 'axios'
 import { Outlet, Route, Routes, useNavigate } from 'react-router-dom'
+import Loading from './components/Loading'
 import Navigation from './components/Navigation/index'
 import Register from './components/Register'
 import SignIn from './components/SignIn'
@@ -12,7 +13,7 @@ import './App.css'
 import FaceRecognition from './components/FaceRecognition'
 import GitHub from './components/GitHub/GitHub'
 import { handleLogout } from './utils/session'
-import Loading from './components/Loading'
+
 
 const {
   REACT_APP_MODEL_ID,

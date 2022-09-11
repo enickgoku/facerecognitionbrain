@@ -10,9 +10,7 @@ const Navigation = () => {
     return (
       <nav style={{ display: 'flex', justifyContent: 'flex-end' }}>
         <p
-          onClick={() => {
-            handleLogout()
-          }}
+          onClick={handleLogout}
           className="f3 link dim black pa3 underline pointer"
         >
           Sign Out
