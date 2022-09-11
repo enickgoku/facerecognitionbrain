@@ -31,12 +31,12 @@ const FaceRecognition = ({ faceData, loading }) => {
     }
   }, [faceData.outputs])
 
+  if (loading) return <Loading />
   if (!imageURL) return null
 
   return (
     <div className="center ms">
       <div className="absolute ma2">
-        {loading ? <Loading /> : null}
         <img
           ref={imageRef}
           id="inputimage"

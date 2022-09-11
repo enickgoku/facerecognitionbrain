@@ -1,4 +1,6 @@
 const Rank = ({ user }) => {
+  if (!user) return null
+
   return (
     <div>
       <div className="white f3">

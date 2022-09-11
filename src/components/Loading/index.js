@@ -1,9 +1,9 @@
-import image from '../../imgs/Rolling-1s-200px.png'
+import styles from './Loading.module.css'
 
 const Loading = () => {
   return (
-    <div className="loading">
-      <img src={image} alt="loading" />
+    <div className={styles.wrapper}>
+      <img src={`${process.env.PUBLIC_URL}/loading.svg`} alt="Loading" />
     </div>
   )
 }
