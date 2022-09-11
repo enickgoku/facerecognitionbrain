@@ -1,7 +1,8 @@
 import React, { useCallback, useRef, useState } from 'react'
+import Loading from '../Loading'
 import './FaceRecognition.css'
 
-const FaceRecognition = ({ faceData }) => {
+const FaceRecognition = ({ faceData, loading }) => {
   const imageRef = useRef()
   const [faces, setFaces] = useState([])
 
@@ -35,6 +36,7 @@ const FaceRecognition = ({ faceData }) => {
   return (
     <div className="center ms">
       <div className="absolute ma2">
+        {loading ? <Loading /> : null}
         <img
           ref={imageRef}
           id="inputimage"

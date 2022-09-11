@@ -98,9 +98,12 @@ function App() {
     [formData]
   )
 
+  const [loading, setLoading] = useState(false)
+
   const onButtonSubmit = useCallback(
     async event => {
       event.preventDefault()
+      setLoading(true)
 
       const headers = {
         Accept: 'application/json',
@@ -150,6 +153,7 @@ function App() {
       }
 
       setFormData({ input: '' })
+      setLoading(false)
     },
     [formData.input, navigate, token, user, userId]
   )
@@ -174,7 +178,7 @@ function App() {
                   onButtonSubmit={onButtonSubmit}
                   formData={formData}
                 />
-                <FaceRecognition faceData={faceData} />
+                <FaceRecognition faceData={faceData} loading={loading} />
               </div>
             )}
           </div>
