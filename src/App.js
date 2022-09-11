@@ -1,7 +1,10 @@
 import React, { useState, useCallback, useEffect } from 'react'
 import ParticleBackground from 'react-particle-backgrounds'
 import axios from 'axios'
-import { Outlet, Route, Routes, useNavigate } from 'react-router-dom'
+
+import { handleLogout, getCredentials } from './utils/session'
+
+import Loading from './components/Loading'
 import Navigation from './components/Navigation/index'
 import Register from './components/Register'
 import SignIn from './components/SignIn'
@@ -44,21 +47,13 @@ const settings4 = {
 function App() {
   const navigate = useNavigate()
 
-  const userData = {
-    user: {
-      id: '',
-      name: '',
-      email: '',
-      entries: 0,
-      joined: '',
-    },
-  }
-
-  const userId = localStorage.getItem('userId')
-  const token = localStorage.getItem('token')
+  const credentials = getCredentials()
 
   useEffect(() => {
-    if (userId && token) {
+    if (credentials) {
+      const { userId, token } = credentials
+      setLoading(true)
+
       fetch(`https://infinite-waters-08259.herokuapp.com/profile/${userId}`, {
         method: 'get',
         headers: {
@@ -82,7 +77,7 @@ function App() {
           }
         })
     }
-  }, [navigate, token, userId])
+  }, [credentials, navigate])
 
   const [user, setUser] = useState(userData)
   const [formData, setFormData] = useState({ input: '' })
@@ -125,7 +120,9 @@ function App() {
         ],
       })
 
-      if (userId && token) {
+      if (credentials) {
+        const { userId, token } = credentials
+
         axios({
           method: 'put',
           url: `https://infinite-waters-08259.herokuapp.com/image/${userId}`,
@@ -151,7 +148,7 @@ function App() {
 
       setFormData({ input: '' })
     },
-    [formData.input, navigate, token, user, userId]
+    [credentials, formData.input, navigate, user]
   )
 
   return (
@@ -163,7 +160,7 @@ function App() {
             <ParticleBackground className="particles" settings={settings4} />
             <Navigation user={user} />
             <GitHub />
-            {!token ? (
+            {!credentials ? (
               <Outlet />
             ) : (
               <div>

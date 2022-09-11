@@ -1,6 +1,8 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 
+import { getCredentials } from '../../utils/session'
+
 function SignIn() {
   const navigate = useNavigate()
 
@@ -11,6 +13,11 @@ function SignIn() {
 
   const [formData, setFormData] = useState(initialState)
   const [error, setError] = useState(false)
+
+  useEffect(() => {
+    const credentials = getCredentials()
+    if (credentials) navigate('/')
+  }, [navigate])
 
   const onFormChange = event => {
     setFormData({
