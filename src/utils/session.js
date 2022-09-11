@@ -15,3 +15,5 @@ export const getCredentials = () => {
     }
   }
 }
+
+export const hasCredentials = () => !!getCredentials()
