@@ -1,5 +1,7 @@
 import React, { useCallback, useRef, useState } from 'react'
+
 import Loading from '../Loading'
+
 import './FaceRecognition.css'
 
 const FaceRecognition = ({ faceData, loading }) => {
