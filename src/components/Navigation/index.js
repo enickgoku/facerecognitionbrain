@@ -1,13 +1,12 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 
-import { handleLogout } from '../../utils/session'
+import { getCredentials, handleLogout } from '../../utils/session'
 
 const Navigation = () => {
-  const token = localStorage.getItem('token')
-  const userId = localStorage.getItem('userId')
+  const credentials = getCredentials()
 
-  if (token && userId) {
+  if (credentials) {
     return (
       <nav style={{ display: 'flex', justifyContent: 'flex-end' }}>
         <p

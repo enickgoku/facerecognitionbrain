@@ -3,10 +3,10 @@ import { Outlet, Route, Routes, useNavigate } from 'react-router-dom'
 import ParticleBackground from 'react-particle-backgrounds'
 import axios from 'axios'
 
-import { handleLogout } from './utils/session'
+import { handleLogout, getCredentials } from './utils/session'
 
 import Loading from './components/Loading'
-import Navigation from './components/Navigation/index'
+import Navigation from './components/Navigation'
 import Register from './components/Register'
 import SignIn from './components/SignIn'
 import Logo from './components/Logo'
@@ -48,11 +48,11 @@ const settings4 = {
 function App() {
   const navigate = useNavigate()
 
-  const userId = localStorage.getItem('userId')
-  const token = localStorage.getItem('token')
+  const credentials = getCredentials()
 
   useEffect(() => {
-    if (userId && token) {
+    if (credentials) {
+      const { userId, token } = credentials
       setLoading(true)
 
       fetch(`https://infinite-waters-08259.herokuapp.com/profile/${userId}`, {
@@ -80,7 +80,7 @@ function App() {
           setLoading(false)
         })
     }
-  }, [navigate, token, userId])
+  }, [credentials, navigate])
 
   const [user, setUser] = useState(null)
   const [formData, setFormData] = useState({ input: '' })
@@ -127,7 +127,9 @@ function App() {
         ],
       })
 
-      if (userId && token) {
+      if (credentials) {
+        const { userId, token } = credentials
+
         axios({
           method: 'put',
           url: `https://infinite-waters-08259.herokuapp.com/image/${userId}`,
@@ -155,7 +157,7 @@ function App() {
 
       setFormData({ input: '' })
     },
-    [formData.input, navigate, token, user, userId]
+    [credentials, formData.input, navigate, user]
   )
 
   return (
@@ -167,7 +169,7 @@ function App() {
             <ParticleBackground className="particles" settings={settings4} />
             <Navigation />
             <GitHub />
-            {!token ? (
+            {!credentials ? (
               <Outlet />
             ) : (
               <div>

@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 
+import { getCredentials } from '../../utils/session'
+
 function SignIn() {
   const navigate = useNavigate()
 
@@ -13,9 +15,8 @@ function SignIn() {
   const [error, setError] = useState(false)
 
   useEffect(() => {
-    const userId = localStorage.getItem('userId')
-    const token = localStorage.getItem('token')
-    if (userId && token) navigate('/')
+    const credentials = getCredentials()
+    if (credentials) navigate('/')
   }, [navigate])
 
   const onFormChange = event => {
