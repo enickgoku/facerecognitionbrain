@@ -1,8 +1,8 @@
 import React from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
+import { handleLogout } from '../../utils/session'
 
 const Navigation = () => {
-  const navigate = useNavigate()
   const token = localStorage.getItem('token')
   const userId = localStorage.getItem('userId')
 
@@ -11,9 +11,7 @@ const Navigation = () => {
       <nav style={{ display: 'flex', justifyContent: 'flex-end' }}>
         <p
           onClick={() => {
-            localStorage.removeItem('userId')
-            localStorage.removeItem('token')
-            navigate('../signin')
+            handleLogout()
           }}
           className="f3 link dim black pa3 underline pointer"
         >

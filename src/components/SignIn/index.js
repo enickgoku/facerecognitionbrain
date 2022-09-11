@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 
 function SignIn() {
@@ -11,6 +11,12 @@ function SignIn() {
 
   const [formData, setFormData] = useState(initialState)
   const [error, setError] = useState(false)
+
+  useEffect(() => {
+    const userId = localStorage.getItem('userId')
+    const token = localStorage.getItem('token')
+    if (userId && token) navigate('/')
+  }, [navigate])
 
   const onFormChange = event => {
     setFormData({
