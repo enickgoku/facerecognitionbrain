@@ -1,7 +1,10 @@
 import React, { useState, useCallback, useEffect } from 'react'
+import { Outlet, Route, Routes, useNavigate } from 'react-router-dom'
 import ParticleBackground from 'react-particle-backgrounds'
 import axios from 'axios'
-import { Outlet, Route, Routes, useNavigate } from 'react-router-dom'
+
+import { handleLogout } from './utils/session'
+
 import Loading from './components/Loading'
 import Navigation from './components/Navigation/index'
 import Register from './components/Register'
@@ -9,11 +12,10 @@ import SignIn from './components/SignIn'
 import Logo from './components/Logo'
 import ImageLinkForm from './components/ImageLinkForm'
 import Rank from './components/Rank'
-import './App.css'
 import FaceRecognition from './components/FaceRecognition'
 import GitHub from './components/GitHub/GitHub'
-import { handleLogout } from './utils/session'
 
+import './App.css'
 
 const {
   REACT_APP_MODEL_ID,
