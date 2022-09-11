@@ -10,11 +10,7 @@ const Navigation = () => {
     return (
       <nav style={{ display: 'flex', justifyContent: 'flex-end' }}>
         <p
-          onClick={() => {
-            localStorage.removeItem('userId')
-            localStorage.removeItem('token')
-            navigate('../signin')
-          }}
+          onClick={handleLogout}
           className="f3 link dim black pa3 underline pointer"
         >
           Sign Out

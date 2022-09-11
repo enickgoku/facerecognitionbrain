@@ -1,6 +1,7 @@
 export const handleLogout = () => {
   localStorage.removeItem('token')
   localStorage.removeItem('userId')
+  window.location.reload()
 }
 
 export const getCredentials = () => {

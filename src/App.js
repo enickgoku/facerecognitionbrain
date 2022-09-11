@@ -1,20 +1,21 @@
 import React, { useState, useCallback, useEffect } from 'react'
+import { Outlet, Route, Routes, useNavigate } from 'react-router-dom'
 import ParticleBackground from 'react-particle-backgrounds'
 import axios from 'axios'
 
 import { handleLogout, getCredentials } from './utils/session'
 
 import Loading from './components/Loading'
-import Navigation from './components/Navigation/index'
+import Navigation from './components/Navigation'
 import Register from './components/Register'
 import SignIn from './components/SignIn'
 import Logo from './components/Logo'
 import ImageLinkForm from './components/ImageLinkForm'
 import Rank from './components/Rank'
-import './App.css'
 import FaceRecognition from './components/FaceRecognition'
 import GitHub from './components/GitHub/GitHub'
-import { handleLogout } from './utils/session'
+
+import './App.css'
 
 const {
   REACT_APP_MODEL_ID,
@@ -75,11 +76,13 @@ function App() {
               joined: response.createdAt,
             })
           }
+
+          setLoading(false)
         })
     }
   }, [credentials, navigate])
 
-  const [user, setUser] = useState(userData)
+  const [user, setUser] = useState(null)
   const [formData, setFormData] = useState({ input: '' })
   const [faceData, setFaceData] = useState({})
 
@@ -93,9 +96,13 @@ function App() {
     [formData]
   )
 
+  const [loading, setLoading] = useState(false)
+
   const onButtonSubmit = useCallback(
     async event => {
       event.preventDefault()
+      setFaceData({})
+      setLoading(true)
 
       const headers = {
         Accept: 'application/json',
@@ -143,6 +150,8 @@ function App() {
               }
             )
           }
+
+          setLoading(false)
         })
       }
 
@@ -158,20 +167,26 @@ function App() {
         element={
           <div className="App">
             <ParticleBackground className="particles" settings={settings4} />
-            <Navigation user={user} />
+            <Navigation />
             <GitHub />
             {!credentials ? (
               <Outlet />
             ) : (
               <div>
                 <Logo />
-                <Rank user={user} />
-                <ImageLinkForm
-                  onInputChange={onInputChange}
-                  onButtonSubmit={onButtonSubmit}
-                  formData={formData}
-                />
-                <FaceRecognition faceData={faceData} />
+                {!user && loading ? (
+                  <Loading />
+                ) : (
+                  <>
+                    <Rank user={user} />
+                    <ImageLinkForm
+                      onInputChange={onInputChange}
+                      onButtonSubmit={onButtonSubmit}
+                      formData={formData}
+                    />
+                    <FaceRecognition faceData={faceData} loading={loading} />
+                  </>
+                )}
               </div>
             )}
           </div>
